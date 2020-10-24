@@ -4,10 +4,10 @@
 
 terraform {
   backend "remote" {
-    organization = "drn"
+    organization = "home-network"
 
     workspaces {
-      name = "dev"
+      name = "vpn-setup"
     }
   }
 }
