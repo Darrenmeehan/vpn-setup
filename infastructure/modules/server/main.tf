@@ -111,10 +111,24 @@ data "aws_ami" "amazonlinux" {
   }
 }
 
+resource "aws_network_interface" "main" {
+  subnet_id   = var.subnet_id
+#   private_ips = ["172.16.10.100"]
+
+  tags = {
+    Name = "primary_network_interface"
+  }
+}
+
 resource "aws_instance" "vpn" {
   ami           = data.aws_ami.amazonlinux.id
   instance_type = "t3.micro"
   iam_instance_profile = aws_iam_instance_profile.server_instance_profile.id
+
+  network_interface {
+    network_interface_id = aws_network_interface.main.id
+    device_index         = 0
+  }
 
   tags = {
     Name = "wiregaurd-vpn"
